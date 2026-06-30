@@ -1,0 +1,37 @@
+[package]
+name = "vc-witness"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+serenity = { version = "0.12", features = ["gateway", "rustls_backend", "model", "unstable", "cache", "voice"] }
+songbird = { git = "https://github.com/serenity-rs/songbird.git", rev = "3fe7289956c978f39d3fa49483f3148fc720f394", features = ["driver", "receive", "serenity", "rustls"] }
+
+whisper-rs = "0.16"
+
+sqlx = { version = "0.8", features = ["runtime-tokio", "sqlite", "migrate", "chrono", "uuid"] }
+
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "sync", "time", "fs", "signal"] }
+
+rubato = "0.16"
+symphonia = { version = "0.5", features = ["pcm"] }
+hound = "3"
+
+thiserror = "2"
+anyhow = "1"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+dotenvy = "0.15"
+chrono = { version = "0.4", features = ["serde"] }
+uuid = { version = "1", features = ["v4", "serde"] }
+async-trait = "0.1"
+arc-swap = "1"
+dashmap = "6"
+num_cpus = "1"
+rustls = { version = "0.23", default-features = false, features = ["ring"] }
+
+[patch.crates-io]
+serenity = { git = "https://github.com/serenity-rs/serenity", branch = "next" }
