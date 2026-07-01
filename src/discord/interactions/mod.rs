@@ -15,6 +15,11 @@ use crate::discord::interactions::decision_buttons::NOTE_MODAL_PREFIX;
 pub async fn dispatch(ctx: Context, state: Arc<AppState>, interaction: Interaction) {
     match interaction {
         Interaction::Command(command) => commands::dispatch(&ctx, &state, &command).await,
+        Interaction::Autocomplete(interaction) => {
+            if interaction.data.name.as_str() == commands::config::NAME {
+                commands::config::handle_autocomplete(&ctx, &state, &interaction).await;
+            }
+        }
         Interaction::Component(component) => {
             if component.data.custom_id == crate::consent::CONSENT_ACCEPT_ID
                 || component.data.custom_id == crate::consent::CONSENT_DECLINE_ID

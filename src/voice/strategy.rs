@@ -27,6 +27,14 @@ impl VcStrategyKind {
         }
     }
 
+    pub fn display_label(&self) -> &'static str {
+        match self {
+            VcStrategyKind::MostRecentActivity => "Most recent activity",
+            VcStrategyKind::Busiest => "Busiest channel",
+            VcStrategyKind::StickyUntilEmpty => "Sticky until empty",
+        }
+    }
+
     pub fn build(&self) -> Box<dyn VcStrategy> {
         match self {
             VcStrategyKind::MostRecentActivity => Box::new(super::strategies::most_recent_activity::MostRecentActivity),

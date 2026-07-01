@@ -49,7 +49,7 @@ impl VcWorldView for WorldState {
 }
 
 /// Owns the single live voice connection for the guild and the currently active
-/// `VcStrategy`, hot-swappable via `/config vc-strategy` through an `ArcSwap`. All
+/// `VcStrategy`, hot-swappable via `/config strategy` through an `ArcSwap`. All
 /// join/leave decisions are funneled through a single-consumer channel so concurrent
 /// gateway events can't race each other into conflicting connection changes.
 pub struct VcManager {

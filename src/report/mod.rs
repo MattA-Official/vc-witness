@@ -53,7 +53,7 @@ pub async fn begin_report_flow(ctx: &Context, interaction: &CommandInteraction, 
                 CreateInteractionResponse::Message(
                     CreateInteractionResponseMessage::new()
                         .ephemeral(true)
-                        .content("Witness hasn't been configured yet, ask a moderator to run `/config reports-channel` first."),
+                        .content("Witness hasn't been configured yet, ask a moderator to run `/config channel` first."),
                 ),
             )
             .await?;
@@ -77,7 +77,13 @@ pub async fn begin_report_flow(ctx: &Context, interaction: &CommandInteraction, 
             let cats = categories::list_active(&state.db, state.guild_id).await?;
             let options: Vec<CreateSelectMenuOption> = cats
                 .iter()
-                .map(|c| CreateSelectMenuOption::new(c.label.clone(), c.value.clone()))
+                .map(|c| {
+                    let opt = CreateSelectMenuOption::new(c.label.clone(), c.value.clone());
+                    match &c.description {
+                        Some(desc) => opt.description(desc.clone()),
+                        None => opt,
+                    }
+                })
                 .collect();
 
             let custom_id = format!("{REPORT_MODAL_PREFIX}{}:{target}", interaction.user.id);
