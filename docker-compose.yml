@@ -1,0 +1,14 @@
+services:
+  witness:
+    image: ghcr.io/matta-official/vc-witness:latest
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      # Overrides DATABASE_PATH/WHISPER_MODEL_PATH from .env (those are for running from
+      # source) with the paths inside the two volumes mounted below.
+      DATABASE_PATH: /data/witness.sqlite3
+      WHISPER_MODEL_PATH: /models/${WHISPER_MODEL_FILE:-ggml-small.en.bin}
+    volumes:
+      - ./data:/data
+      - ./models:/models

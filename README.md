@@ -19,13 +19,34 @@ review user-filed reports.
   - `/data erase` clears the consent record and any unreported buffered audio (future)
 - Stores per-server configuration in SQLite and exposes it through `/config`.
 
-## Requirements
+## Docker
+
+The easiest way to run Witness is the prebuilt image published on every
+[release](https://github.com/MattA-Official/vc-witness/releases).
+
+1. Download a Whisper model in ggml format (e.g. `ggml-small.en.bin` from the
+   [whisper.cpp model repo](https://huggingface.co/ggerganov/whisper.cpp/tree/main)) and put it in
+   a local `models/` folder.
+2. Copy `.env.example` to `.env` and fill in `DISCORD_TOKEN`, `GUILD_ID`, and (if your model
+   filename isn't `ggml-small.en.bin`) `WHISPER_MODEL_FILE`.
+3. Grab `docker-compose.yml` from the latest release (or this repo) and run:
+
+   ```sh
+   docker compose up -d
+   ```
+
+Witness stores its SQLite database under `./data` and reads the model from `./models`, both bind-
+mounted into the container, so upgrading is just pulling a new image tag and restarting.
+
+## From source
+
+### Requirements
 
 - Rust toolchain
 - CMake on your PATH (required for the native Whisper build)
 - A Whisper model in ggml format, for example `models/ggml-small.en.bin`
 
-## Setup
+### Setup
 
 1. Copy `.env.example` to `.env` and fill in:
    - `DISCORD_TOKEN` - your bot token
@@ -45,12 +66,13 @@ migrations, seeds default report categories, and registers the slash commands.
 - `Report VC Activity` (user context menu) - same as above
 - `/data request` - show the data Witness has about you
 - `/data erase` - erase your consent record and any unreported buffered audio
-- `/config reports-channel <channel>` - set the channel where reports are posted
-- `/config mod-role <role>` - set the role that can resolve reports
-- `/config buffer-duration <seconds>` - set the rolling audio buffer window
-- `/config tail-duration <seconds>` - set the post-report recording tail
-- `/config vc-strategy <mode>` - choose the voice-channel selection strategy
-- `/config category add|remove|edit ...` - manage report categories
+- `/config show` - show the server's current configuration
+- `/config channel <channel>` - set the channel where reports are posted
+- `/config role <role>` - set the role that can resolve reports
+- `/config buffer <duration>` - set the rolling audio buffer window
+- `/config tail <duration>` - set the post-report recording tail
+- `/config strategy <mode>` - choose the voice-channel selection strategy
+- `/config category list|add|remove|edit ...` - manage report categories
 
 ## Notes
 
